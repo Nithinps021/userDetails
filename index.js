@@ -1,18 +1,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
+require('dotenv').config()
 const {
   signUp,
   getAllUserDetails,
   editUserDetails,
-  deleteUser
+  deleteUser,
+  login,
+  verifyToken
 } = require("./userFunctions");
 
 const app = express();
 app.listen(8080);
 
 // database authentication
-const uri =
-  "mongodb+srv://user:user@123@cluster0.zusdk.mongodb.net/user?retryWrites=true&w=majority";
+const uri =process.env.MONGODB;
 mongoose.connect(uri,{useUnifiedTopology:true,useNewUrlParser:true})
 .then(()=>{
   console.log("db connected")
@@ -27,7 +29,8 @@ app.use(express.json())
 app.get("/", (req, res) => {
   return res.status(200).json("express server running");
 });
-app.get("/allusers", getAllUserDetails);
-app.post("/", signUp);
-app.put("/:userId", editUserDetails);
-app.delete("/:userId",deleteUser)
+app.get("/allusers",verifyToken, getAllUserDetails);
+app.post("/signup", signUp);
+app.put("/:userId",verifyToken, editUserDetails);
+app.delete("/:userId",verifyToken,deleteUser)
+app.post('/login',login)

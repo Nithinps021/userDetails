@@ -7,6 +7,7 @@ const userModelSchema=new Schema({
         type:String,
         unique:true,
     },
+    password:String,
     address:String
 })
 
