@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors=require('cors')
 require('dotenv').config()
 const {
   signUp,
@@ -11,6 +12,7 @@ const {
 } = require("./userFunctions");
 
 const app = express();
+app.use(cors())
 app.listen(8080);
 
 // database authentication
